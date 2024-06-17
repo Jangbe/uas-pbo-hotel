@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long guestId;
+    private Long guestId;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -27,11 +27,11 @@ public class Guest {
     @Column(name = "date_of_birth")
     private String dateOfBirth;
 
-    public long getGuestId() {
+    public Long getGuestId() {
         return guestId;
     }
 
-    public void setGuestId(long guestId) {
+    public void setGuestId(Long guestId) {
         this.guestId = guestId;
     }
 

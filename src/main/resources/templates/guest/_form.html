@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Form Tamu</title>
+</head>
+
+<body>
+    <h1 th:if="${guest.guestId == null}">Buat Data Tamu</h1>
+    <h1 th:if="${guest.guestId != null}">Ubah Data Tamu</h1>
+    <form th:action="@{${guest.guestId} == null ? '/guests' : '/guests/' + ${guest.guestId}}" th:object="${guest}"
+        th:method="@{${guest.guestId} == null ? 'POST' : 'PUT'}">
+        <input type="hidden" th:if="${guest.guestId != null}" th:field="*{guestId}" />
+        <div>
+            <label>Nama Depan:</label>
+            <input type="text" th:field="*{firstName}" required />
+        </div>
+        <div>
+            <label>Nama Belakang:</label>
+            <input type="text" th:field="*{lastName}" required />
+        </div>
+        <div>
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" required />
+        </div>
+        <div>
+            <label>No HP:</label>
+            <input type="text" th:field="*{phoneNumber}" required />
+        </div>
+        <div>
+            <label>Alamat:</label>
+            <input type="text" th:field="*{address}" required />
+        </div>
+        <div>
+            <label>Tanggal Lahir:</label>
+            <input type="date" th:field="*{dateOfBirth}" required />
+        </div>
+        <div>
+            <button type="submit" th:if="${guest.guestId == null}">Simpan</button>
+            <button type="submit" th:if="${guest.guestId != null}">Ubah</button>
+        </div>
+    </form>
+    <a href="/guests">Kembali Ke Master Tamu</a>
+</body>
+
+</html>
