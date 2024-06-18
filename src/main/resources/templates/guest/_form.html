@@ -1,46 +1,69 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}">
 
 <head>
     <title>Form Tamu</title>
 </head>
 
 <body>
-    <h1 th:if="${guest.guestId == null}">Buat Data Tamu</h1>
-    <h1 th:if="${guest.guestId != null}">Ubah Data Tamu</h1>
-    <form th:action="@{${guest.guestId} == null ? '/guests' : '/guests/' + ${guest.guestId}}" th:object="${guest}"
-        th:method="@{${guest.guestId} == null ? 'POST' : 'PUT'}">
-        <input type="hidden" th:if="${guest.guestId != null}" th:field="*{guestId}" />
-        <div>
-            <label>Nama Depan:</label>
-            <input type="text" th:field="*{firstName}" required />
+    <div class="pd-20 card-box mb-30" layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h4 class="text-blue h4 mb-0" th:text="@{${guest.guestId} == null ? 'Buat Data Tamu' : 'Ubah Data Tamu'}">
+            </h4>
+            <a href="/guests" class="btn btn-primary btn-sm scroll-click"><i class="fa fa-back"></i> Kembali</a>
         </div>
-        <div>
-            <label>Nama Belakang:</label>
-            <input type="text" th:field="*{lastName}" required />
-        </div>
-        <div>
-            <label>Email:</label>
-            <input type="email" th:field="*{email}" required />
-        </div>
-        <div>
-            <label>No HP:</label>
-            <input type="text" th:field="*{phoneNumber}" required />
-        </div>
-        <div>
-            <label>Alamat:</label>
-            <input type="text" th:field="*{address}" required />
-        </div>
-        <div>
-            <label>Tanggal Lahir:</label>
-            <input type="date" th:field="*{dateOfBirth}" required />
-        </div>
-        <div>
-            <button type="submit" th:if="${guest.guestId == null}">Simpan</button>
-            <button type="submit" th:if="${guest.guestId != null}">Ubah</button>
-        </div>
-    </form>
-    <a href="/guests">Kembali Ke Master Tamu</a>
+        <form th:action="@{${guest.guestId} == null ? '/guests' : '/guests/' + ${guest.guestId}}" th:object="${guest}"
+            th:method="@{${guest.guestId} == null ? 'POST' : 'PUT'}">
+            <input type="hidden" th:if="${guest.guestId != null}" th:field="*{guestId}" />
+            <div class="row g-2">
+                <div class="col-md-6 col-12">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Nama Depan</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="text" class="form-control" th:field="*{firstName}" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Nama Belakang</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="text" class="form-control" th:field="*{lastName}" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Email</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="email" class="form-control" th:field="*{email}" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">No HP</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="text" class="form-control" th:field="*{phoneNumber}" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Tanggal Lahir</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="date" class="form-control" th:field="*{dateOfBirth}" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Alamat</label>
+                        <div class="col-sm-12 col-md-8">
+                            <textarea rows="3" class="form-control" th:field="*{address}" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit" th:if="${guest.guestId == null}">Simpan</button>
+                <button class="btn btn-success" type="submit" th:if="${guest.guestId != null}">Ubah</button>
+            </div>
+        </form>
+        <script>$('a[href="/guests"]').addClass('active')</script>
+    </div>
 </body>
 
 </html>

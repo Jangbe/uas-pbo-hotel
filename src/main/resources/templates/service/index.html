@@ -9,33 +9,53 @@
 </head>
 
 <body>
-    <div layout:fragment="content">
-        <h1>Data Layanan</h1>
-        <a href="/services/create">Tambah Data Layanan</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nama Layanan</th>
-                    <th>Deskripsi</th>
-                    <th>Harga</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="row : ${services}">
-                    <td th:text="${row.serviceName}"></td>
-                    <td th:text="${row.description}"></td>
-                    <td th:text="${row.price}"></td>
-                    <td>
-                        <a th:href="@{/services/{id}/edit(id=${row.serviceId})}">Edit</a>
-                        <form th:action="@{/services/{id}(id=${row.serviceId})}" method="post" style="display:inline">
-                            <input type="hidden" name="_method" value="delete" />
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="card-box mb-30" layout:fragment="content">
+        <div class="pd-20 d-flex justify-content-between align-items-center">
+            <h4 class="text-blue h4 mb-0">Data Layanan</h4>
+            <a href="/services/create" class="btn btn-sm btn-success">Tambah</a>
+        </div>
+        <div class="pb-20">
+            <table class="data-table table stripe hover nowrap">
+                <thead>
+                    <tr>
+                        <th class="table-plus">Nama Layanan</th>
+                        <th>Deskripsi</th>
+                        <th>Harga</th>
+                        <th class="datatable-nosort">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="row : ${services}">
+                        <td class="table-plus" th:text="${row.serviceName}"></td>
+                        <td th:text="${row.description}"></td>
+                        <td th:text="${row.price}"></td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
+                                    role="button" data-toggle="dropdown">
+                                    <i class="dw dw-more"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                    <a class="dropdown-item" th:href="@{/services/{id}/edit(id=${row.serviceId})}"><i
+                                            class="dw dw-edit2"></i> Edit</a>
+                                    <a class="dropdown-item" href="#" onclick="$(this).next().submit()"><i
+                                            class="dw dw-delete-3"></i>
+                                        Delete
+                                    </a>
+                                    <form th:action="@{/services/{id}(id=${row.serviceId})}" method="post"
+                                        style="display:inline">
+                                        <input type="hidden" name="_method" value="delete" />
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <script>
+            $('a[href="/services"]').addClass('active')
+        </script>
     </div>
 </body>
 
