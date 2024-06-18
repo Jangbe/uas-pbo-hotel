@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Layanan</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <h1>Data Layanan</h1>
+        <a href="/services/create">Tambah Data Layanan</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Layanan</th>
+                    <th>Deskripsi</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="row : ${services}">
+                    <td th:text="${row.serviceName}"></td>
+                    <td th:text="${row.description}"></td>
+                    <td th:text="${row.price}"></td>
+                    <td>
+                        <a th:href="@{/services/{id}/edit(id=${row.serviceId})}">Edit</a>
+                        <form th:action="@{/services/{id}(id=${row.serviceId})}" method="post" style="display:inline">
+                            <input type="hidden" name="_method" value="delete" />
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

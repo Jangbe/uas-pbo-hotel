@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Form Layanan</title>
+</head>
+
+<body>
+    <h1 th:if="${service.serviceId == null}">Buat Data Layanan</h1>
+    <h1 th:if="${service.serviceId != null}">Ubah Data Layanan</h1>
+    <form th:action="@{${service.serviceId} == null ? '/services' : '/services/' + ${service.serviceId}}" th:object="${service}"
+        th:method="@{${service.serviceId} == null ? 'POST' : 'PUT'}">
+        <input type="hidden" th:if="${service.serviceId != null}" th:field="*{serviceId}" />
+        <div>
+            <label>Nama Layanan:</label>
+            <input type="text" th:field="*{serviceName}" required />
+        </div>
+        <div>
+            <label>Deskripsi:</label>
+            <textarea type="text" th:field="*{description}" required />
+        </div>
+        <div>
+            <label>Harga:</label>
+            <input type="number" th:field="*{price}" required />
+        </div>
+        <div>
+            <button type="submit" th:if="${service.serviceId == null}">Simpan</button>
+            <button type="submit" th:if="${service.serviceId != null}">Ubah</button>
+        </div>
+    </form>
+    <a href="/services">Kembali Ke Master Layanan</a>
+</body>
+
+</html>
