@@ -1,6 +1,8 @@
 package com.kelompok1.hotel.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "services")
@@ -9,13 +11,16 @@ public class Service {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long serviceId;
 
-    @Column(name = "service_name")
+    @NotBlank(message = "Nama layanan tidak boleh kosong")
+    @Column(nullable = false)
     private String serviceName;
-
-    @Column(name = "description")
+    
+    @NotBlank(message = "Deskripsi tidak boleh kosong")
+    @Column(nullable = false)
     private String description;
-
-    @Column(name = "price")
+    
+    @NotNull(message = "Harga tidak boleh kosong")
+    @Column()
     private Double price;
 
     public Long getServiceId() {

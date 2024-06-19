@@ -358,3 +358,17 @@ function CopyToClipboard(value, showNotification, notificationText) {
 	// other browser
 	return false;
 })();
+
+async function showConfirmDelete(node) {
+	const { isConfirmed } = await Swal.fire({
+		icon: 'warning',
+		title: 'Apakah kamu yakin?',
+		text: 'Data tidak bisa akan dikembalikan',
+		showCancelButton: true,
+		cancelButtonText: 'Batal',
+		confirmButtonText: 'Ya',
+		cancelButtonColor: '#28a745',
+		confirmButtonColor: '#dc3545',
+	})
+	if (isConfirmed) $(node).next().submit();
+}

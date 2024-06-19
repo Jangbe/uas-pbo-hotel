@@ -11,7 +11,7 @@
 <body>
     <div class="card-box mb-30" layout:fragment="content">
         <div class="pd-20 d-flex justify-content-between align-items-center">
-            <h4 class="text-blue h4 mb-0">Data Layanan</h4>
+            <h4 class="text-blue h4 mb-0">Data Tamu</h4>
             <a href="/guests/create" class="btn btn-sm btn-success">Tambah</a>
         </div>
         <div class="pb-20">
@@ -42,8 +42,8 @@
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                     <a class="dropdown-item" th:href="@{/guests/{id}/edit(id=${row.guestId})}"><i
                                             class="dw dw-edit2"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" onclick="$(this).next().submit()"><i
-                                            class="dw dw-delete-3"></i>
+                                    <a class="dropdown-item" href="#" onclick="showConfirmDelete(this)">
+                                        <i class="dw dw-delete-3"></i>
                                         Delete
                                     </a>
                                     <form th:action="@{/guests/{id}(id=${row.guestId})}" method="post"

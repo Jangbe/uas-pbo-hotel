@@ -8,29 +8,37 @@
 <body>
     <div class="pd-20 card-box mb-30" layout:fragment="content">
         <div class="d-flex justify-content-between align-items-center mb-5">
-            <h4 class="text-blue h4 mb-0" th:text="@{${service.serviceId} == null ? 'Buat Data Layanan' : 'Ubah Data Layanan'}">
+            <h4 class="text-blue h4 mb-0"
+                th:text="@{${service.serviceId} == null ? 'Buat Data Layanan' : 'Ubah Data Layanan'}">
             </h4>
             <a href="/services" class="btn btn-primary btn-sm scroll-click"><i class="fa fa-back"></i> Kembali</a>
         </div>
-        <form th:action="@{${service.serviceId} == null ? '/services' : '/services/' + ${service.serviceId}}" th:object="${service}"
-            th:method="@{${service.serviceId} == null ? 'POST' : 'PUT'}">
+        <form th:action="@{${service.serviceId} == null ? '/services' : '/services/' + ${service.serviceId}}"
+            th:object="${service}" th:method="@{${service.serviceId} == null ? 'POST' : 'PUT'}">
             <input type="hidden" th:if="${service.serviceId != null}" th:field="*{serviceId}" />
             <div class="form-group row">
                 <label class="col-sm-12 col-md-4 col-form-label">Nama Layanan</label>
                 <div class="col-sm-12 col-md-8">
-                    <input type="text" class="form-control" th:field="*{serviceName}" required />
+                    <input type="text"
+                        th:class="${'form-control ' + (#fields.hasErrors('serviceName')? 'is-invalid':'') }"
+                        th:field="*{serviceName}" />
+                    <span class="invalid-feedback" th:errors="*{serviceName}"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-12 col-md-4 col-form-label">Deskripsi</label>
                 <div class="col-sm-12 col-md-8">
-                    <textarea class="form-control" th:field="*{description}" required />
+                    <textarea th:class="${'form-control ' + (#fields.hasErrors('description')? 'is-invalid':'') }"
+                        th:field="*{description}" />
+                    <span class="invalid-feedback" th:errors="*{description}"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-12 col-md-4 col-form-label">Harga</label>
                 <div class="col-sm-12 col-md-8">
-                    <input type="number" class="form-control" th:field="*{price}" required />
+                    <input type="number" th:class="${'form-control ' + (#fields.hasErrors('price')? 'is-invalid':'') }"
+                        th:field="*{price}" />
+                    <span class="invalid-feedback" th:errors="*{price}"></span>
                 </div>
             </div>
             <div>

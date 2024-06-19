@@ -1,6 +1,8 @@
 package com.kelompok1.hotel.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "guests")
@@ -9,21 +11,28 @@ public class Guest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long guestId;
 
-    @Column(name = "first_name", nullable = false)
+    @NotBlank(message = "Nama depan tidak boleh kosong")
+    @Column(nullable = false)
     private String firstName;
-
-    @Column(name = "last_name", nullable = false)
+    
+    @NotBlank(message = "Nama belakang tidak boleh kosong")
+    @Column(nullable = false)
     private String lastName;
-
-    @Column(name = "email", unique = true)
+    
+    @NotBlank(message = "Email tidak boleh kosong")
+    @Email(message = "Email tidak valid")
+    @Column(unique = true)
     private String email;
-
-    @Column(name = "phone_number")
+    
+    @NotBlank(message = "No telepon boleh kosong")
+    @Column()
     private String phoneNumber;
-
-    @Column(name = "address")
+    
+    @NotBlank(message = "Alamat boleh kosong")
+    @Column()
     private String address;
     
+    @NotBlank(message = "Tanggal lahir boleh kosong")
     @Column(name = "date_of_birth")
     private String dateOfBirth;
 

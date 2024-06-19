@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kelompok1.hotel.model.Guest;
 import com.kelompok1.hotel.service.GuestService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +41,9 @@ public class GuestController {
     }
 
     @PostMapping
-    public String store(@ModelAttribute("guest") Guest guest) {
+    public String store(@Valid @ModelAttribute("guest") Guest guest, BindingResult result) {
+        if (result.hasErrors())
+            return "guest/_form";
         guestService.saveGuest(guest);
         return "redirect:/guests";
     }
@@ -57,7 +62,9 @@ public class GuestController {
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute("guest") Guest guest) {
+    public String update(@PathVariable Long id, @Valid @ModelAttribute("guest") Guest guest, BindingResult result) {
+        if (result.hasErrors())
+            return "guest/_form";
         guestService.updateGuest(id, guest);
         return "redirect:/guests";
     }
