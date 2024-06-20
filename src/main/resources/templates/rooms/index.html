@@ -20,8 +20,9 @@
                     <tr>
                         <th class="table-plus">Nomor Kamar</th>
                         <th>Tipe Kamar</th>
-                        <th>Status Booking</th>
+                        <th>Kapasitas</th>
                         <th>Harga</th>
+                        <th>Status Booking</th>
                         <th class="datatable-nosort">Aksi</th>
                     </tr>
                 </thead>
@@ -29,8 +30,9 @@
                     <tr th:each="room : ${rooms}">
                         <td class="table-plus" th:text="${room.roomNo}"></td>
                         <td th:text="${room.roomType}"></td>
-                        <td th:text="${room.bookingStatus}"></td>
+                        <td th:text="${room.kapasitas}"></td>
                         <td th:text="${room.harga}"></td>
+                        <td th:text="${room.bookingStatus}"></td>
                         <td>
                             <div class="dropdown">
                                 <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"

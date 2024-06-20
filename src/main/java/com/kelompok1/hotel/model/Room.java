@@ -19,24 +19,30 @@ public class Room {
     @Column(nullable = false)
     private String roomNo;
 
-    @Column(nullable = false)
+    @Column
     private String roomType;
+
+    @Column
+    private int kapasitas;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal harga;
 
     @Column(nullable = false)
     private String bookingStatus;
 
-    @Column(nullable = false)
-    private BigDecimal harga;
-
     public Room() {
+        this.bookingStatus = "available";
     }
 
-    public Room(String roomNo, String roomType, String bookingStatus) {
+    public Room(String roomNo, String roomType, int kapasitas, String bookingStatus, BigDecimal harga) {
         this.roomNo = roomNo;
         this.roomType = roomType;
+        this.harga = harga;
         this.bookingStatus = bookingStatus;
     }
 
+    // Getters and Setters
     public Long getRoomId() {
         return roomId;
     }
@@ -61,12 +67,12 @@ public class Room {
         this.roomType = roomType;
     }
 
-    public String getBookingStatus() {
-        return bookingStatus;
+    public int getKapasitas() {
+        return kapasitas;
     }
 
-    public void setBookingStatus(String bookingStatus) {
-        this.bookingStatus = bookingStatus;
+    public void setKapasitas(int kapasitas) {
+        this.kapasitas = kapasitas;
     }
 
     public BigDecimal getHarga() {
@@ -75,5 +81,13 @@ public class Room {
 
     public void setHarga(BigDecimal harga) {
         this.harga = harga;
+    }
+
+    public String getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(String bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
 }

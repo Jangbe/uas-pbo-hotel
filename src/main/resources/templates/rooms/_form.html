@@ -30,24 +30,20 @@
                 <div class="col-sm-12 col-md-8">
                     <select th:class="${'form-control ' + (#fields.hasErrors('roomType') ? 'is-invalid' : '')}"
                         th:field="*{roomType}">
-                        <option value="Standard Room">Standard Room</option>
-                        <option value="Superior Room">Superior Room</option>
-                        <option value="Deluxe Room">Deluxe Room</option>
-                        <option value="Twin Room">Twin Room</option>
-                        <option value="Family Room">Family Room</option>
+                        <option value="Single">Single</option>
+                        <option value="Double">Double</option>
+                        <option value="Suite">Suite</option>
                     </select>
                     <span class="invalid-feedback" th:errors="*{roomType}"></span>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-12 col-md-4 col-form-label">Status Booking</label>
+                <label class="col-sm-12 col-md-4 col-form-label">Kapasitas</label>
                 <div class="col-sm-12 col-md-8">
-                    <select th:class="${'form-control ' + (#fields.hasErrors('bookingStatus') ? 'is-invalid' : '')}"
-                        th:field="*{bookingStatus}">
-                        <option value="Booked">Booked</option>
-                        <option value="Available">Available</option>
-                    </select>
-                    <span class="invalid-feedback" th:errors="*{bookingStatus}"></span>
+                    <input type="number"
+                           th:class="${'form-control ' + (#fields.hasErrors('kapasitas') ? 'is-invalid' : '')}"
+                           th:field="*{kapasitas}" />
+                    <span class="invalid-feedback" th:errors="*{kapasitas}"></span>
                 </div>
             </div>
             <div class="form-group row">
@@ -60,6 +56,17 @@
                 </div>
             </div>
             
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-4 col-form-label">Status Booking</label>
+                <div class="col-sm-12 col-md-8">
+                    <select th:class="${'form-control ' + (#fields.hasErrors('bookingStatus') ? 'is-invalid' : '')}"
+                        th:field="*{bookingStatus}">
+                        <option value="Booked">Booked</option>
+                        <option value="Available">Available</option>
+                    </select>
+                    <span class="invalid-feedback" th:errors="*{bookingStatus}"></span>
+                </div>
+            </div>
             <div>
                 <button class="btn btn-success" type="submit" th:if="${room.roomId == null}">Simpan</button>
                 <button class="btn btn-success" type="submit" th:if="${room.roomId != null}">Ubah</button>
