@@ -14,49 +14,51 @@ import jakarta.persistence.Table;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roomId;
+    @Column(name = "room_id")
+    private Integer roomId;
 
-    @Column(nullable = false)
-    private String roomNo;
+    @Column(name = "room_number", nullable = false)
+    private String roomNum;
 
-    @Column
+    @Column(name = "room_type")
     private String roomType;
 
-    @Column
-    private int kapasitas;
+    @Column(name = "capacity")
+    private Integer capacity;
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal harga;
+    @Column(name = "price_per_night", precision = 10, scale = 2)
+    private BigDecimal pricePerNight;
 
-    @Column(nullable = false)
-    private String bookingStatus;
+    @Column(name = "status")
+    private String status;
 
     public Room() {
-        this.bookingStatus = "available";
+        this.status = "available"; // default status
     }
 
-    public Room(String roomNo, String roomType, int kapasitas, String bookingStatus, BigDecimal harga) {
-        this.roomNo = roomNo;
+    public Room(String roomNum, String roomType, Integer capacity, BigDecimal pricePerNight, String status) {
+        this.roomNum = roomNum;
         this.roomType = roomType;
-        this.harga = harga;
-        this.bookingStatus = bookingStatus;
+        this.capacity = capacity;
+        this.pricePerNight = pricePerNight;
+        this.status = status;
     }
 
     // Getters and Setters
-    public Long getRoomId() {
+    public Integer getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(Integer roomId) {
         this.roomId = roomId;
     }
 
-    public String getRoomNo() {
-        return roomNo;
+    public String getRoomNum() {
+        return roomNum;
     }
 
-    public void setRoomNo(String roomNo) {
-        this.roomNo = roomNo;
+    public void setRoomNum(String roomNum) {
+        this.roomNum = roomNum;
     }
 
     public String getRoomType() {
@@ -67,27 +69,27 @@ public class Room {
         this.roomType = roomType;
     }
 
-    public int getKapasitas() {
-        return kapasitas;
+    public Integer getCapacity() {
+        return capacity;
     }
 
-    public void setKapasitas(int kapasitas) {
-        this.kapasitas = kapasitas;
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
-    public BigDecimal getHarga() {
-        return harga;
+    public BigDecimal getPricePerNight() {
+        return pricePerNight;
     }
 
-    public void setHarga(BigDecimal harga) {
-        this.harga = harga;
+    public void setPricePerNight(BigDecimal pricePerNight) {
+        this.pricePerNight = pricePerNight;
     }
 
-    public String getBookingStatus() {
-        return bookingStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setBookingStatus(String bookingStatus) {
-        this.bookingStatus = bookingStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

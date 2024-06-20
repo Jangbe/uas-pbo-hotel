@@ -47,14 +47,14 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Room> getRoomById(@PathVariable Long id) {
+    public ResponseEntity<Room> getRoomById(@PathVariable Integer id) {
         Room room = roomService.getRoomById(id)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
         return ResponseEntity.ok(room);
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable Long id, Model model) {
+    public String edit(@PathVariable Integer id, Model model) {
         Room room = roomService.getRoomById(id)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
         model.addAttribute("room", room);
@@ -62,7 +62,7 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @Valid @ModelAttribute("room") Room room,
+    public String update(@PathVariable Integer id, @Valid @ModelAttribute("room") Room room,
             BindingResult result) {
         if (result.hasErrors())
             return "rooms/_form";
@@ -71,7 +71,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRoom(@PathVariable Long id) {
+    public String deleteRoom(@PathVariable Integer id) {
         roomService.deleteRoom(id);
         return "redirect:/rooms";
     }

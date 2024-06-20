@@ -20,9 +20,9 @@
                 <label class="col-sm-12 col-md-4 col-form-label">Nomor Kamar</label>
                 <div class="col-sm-12 col-md-8">
                     <input type="text"
-                        th:class="${'form-control ' + (#fields.hasErrors('roomNo') ? 'is-invalid' : '')}"
-                        th:field="*{roomNo}" />
-                    <span class="invalid-feedback" th:errors="*{roomNo}"></span>
+                        th:class="${'form-control ' + (#fields.hasErrors('roomNum') ? 'is-invalid' : '')}"
+                        th:field="*{roomNum}" />
+                    <span class="invalid-feedback" th:errors="*{roomNum}"></span>
                 </div>
             </div>
             <div class="form-group row">
@@ -41,30 +41,30 @@
                 <label class="col-sm-12 col-md-4 col-form-label">Kapasitas</label>
                 <div class="col-sm-12 col-md-8">
                     <input type="number"
-                           th:class="${'form-control ' + (#fields.hasErrors('kapasitas') ? 'is-invalid' : '')}"
-                           th:field="*{kapasitas}" />
-                    <span class="invalid-feedback" th:errors="*{kapasitas}"></span>
+                           th:class="${'form-control ' + (#fields.hasErrors('capacity') ? 'is-invalid' : '')}"
+                           th:field="*{capacity}" />
+                    <span class="invalid-feedback" th:errors="*{capacity}"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-12 col-md-4 col-form-label">Harga</label>
                 <div class="col-sm-12 col-md-8">
                     <input type="text"
-                           th:class="${'form-control ' + (#fields.hasErrors('harga') ? 'is-invalid' : '')}"
-                           th:field="*{harga}" />
-                    <span class="invalid-feedback" th:errors="*{harga}"></span>
+                           th:class="${'form-control ' + (#fields.hasErrors('pricePerNight') ? 'is-invalid' : '')}"
+                           th:field="*{pricePerNight}" />
+                    <span class="invalid-feedback" th:errors="*{pricePerNight}"></span>
                 </div>
             </div>
             
             <div class="form-group row">
                 <label class="col-sm-12 col-md-4 col-form-label">Status Booking</label>
                 <div class="col-sm-12 col-md-8">
-                    <select th:class="${'form-control ' + (#fields.hasErrors('bookingStatus') ? 'is-invalid' : '')}"
-                        th:field="*{bookingStatus}">
+                    <select th:class="${'form-control ' + (#fields.hasErrors('status') ? 'is-invalid' : '')}"
+                        th:field="*{status}">
                         <option value="Booked">Booked</option>
                         <option value="Available">Available</option>
                     </select>
-                    <span class="invalid-feedback" th:errors="*{bookingStatus}"></span>
+                    <span class="invalid-feedback" th:errors="*{status}"></span>
                 </div>
             </div>
             <div>
