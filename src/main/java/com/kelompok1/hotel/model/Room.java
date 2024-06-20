@@ -1,5 +1,7 @@
 package com.kelompok1.hotel.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +24,9 @@ public class Room {
 
     @Column(nullable = false)
     private String bookingStatus;
+
+    @Column(nullable = false)
+    private BigDecimal harga;
 
     public Room() {
     }
@@ -62,5 +67,13 @@ public class Room {
 
     public void setBookingStatus(String bookingStatus) {
         this.bookingStatus = bookingStatus;
+    }
+
+    public BigDecimal getHarga() {
+        return harga;
+    }
+
+    public void setHarga(BigDecimal harga) {
+        this.harga = harga;
     }
 }

@@ -32,6 +32,7 @@ public class RoomService {
         room.setRoomNo(roomDetails.getRoomNo());
         room.setRoomType(roomDetails.getRoomType());
         room.setBookingStatus(roomDetails.getBookingStatus());
+        room.setHarga(roomDetails.getHarga());
         return roomRepository.save(room);
     }
 
