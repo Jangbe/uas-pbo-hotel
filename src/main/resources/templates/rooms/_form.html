@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}">
+
+<head>
+    <title>Form Kamar</title>
+</head>
+
+<body>
+    <div class="pd-20 card-box mb-30" layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h4 class="text-blue h4 mb-0"
+                th:text="${room.roomId == null ? 'Buat Data Kamar' : 'Ubah Data Kamar'}">
+            </h4>
+            <a href="/rooms" class="btn btn-primary btn-sm scroll-click"><i class="fa fa-back"></i> Kembali</a>
+        </div>
+        <form th:action="@{${room.roomId == null} ? '/rooms' : '/rooms/' + ${room.roomId}}"
+            th:object="${room}" th:method="${room.roomId == null} ? 'post' : 'put'">
+            <input type="hidden" th:if="${room.roomId != null}" th:field="*{roomId}" />
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-4 col-form-label">Nomor Kamar</label>
+                <div class="col-sm-12 col-md-8">
+                    <input type="text"
+                        th:class="${'form-control ' + (#fields.hasErrors('roomNum') ? 'is-invalid' : '')}"
+                        th:field="*{roomNum}" />
+                    <span class="invalid-feedback" th:errors="*{roomNum}"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-4 col-form-label">Tipe Kamar</label>
+                <div class="col-sm-12 col-md-8">
+                    <select th:class="${'form-control ' + (#fields.hasErrors('roomType') ? 'is-invalid' : '')}"
+                        th:field="*{roomType}">
+                        <option value="Single">Single</option>
+                        <option value="Double">Double</option>
+                        <option value="Suite">Suite</option>
+                    </select>
+                    <span class="invalid-feedback" th:errors="*{roomType}"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-4 col-form-label">Kapasitas</label>
+                <div class="col-sm-12 col-md-8">
+                    <input type="number"
+                           th:class="${'form-control ' + (#fields.hasErrors('capacity') ? 'is-invalid' : '')}"
+                           th:field="*{capacity}" />
+                    <span class="invalid-feedback" th:errors="*{capacity}"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-4 col-form-label">Harga</label>
+                <div class="col-sm-12 col-md-8">
+                    <input type="text"
+                           th:class="${'form-control ' + (#fields.hasErrors('pricePerNight') ? 'is-invalid' : '')}"
+                           th:field="*{pricePerNight}" />
+                    <span class="invalid-feedback" th:errors="*{pricePerNight}"></span>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-4 col-form-label">Status Booking</label>
+                <div class="col-sm-12 col-md-8">
+                    <select th:class="${'form-control ' + (#fields.hasErrors('status') ? 'is-invalid' : '')}"
+                        th:field="*{status}">
+                        <option value="Booked">Booked</option>
+                        <option value="Available">Available</option>
+                    </select>
+                    <span class="invalid-feedback" th:errors="*{status}"></span>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit" th:if="${room.roomId == null}">Simpan</button>
+                <button class="btn btn-success" type="submit" th:if="${room.roomId != null}">Ubah</button>
+            </div>
+        </form>
+        <script>$('a[href="/rooms"]').addClass('active')</script>
+    </div>
+</body>
+
+</html>
