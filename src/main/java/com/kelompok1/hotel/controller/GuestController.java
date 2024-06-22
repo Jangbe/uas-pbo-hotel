@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kelompok1.hotel.model.Guest;
 import com.kelompok1.hotel.service.GuestService;
@@ -36,15 +37,21 @@ public class GuestController {
 
     @GetMapping("/create")
     public String create(Model model) {
-        model.addAttribute("guest", new Guest());
+        if (!model.containsAttribute("guest"))
+            model.addAttribute("guest", new Guest());
         return "guest/_form";
     }
 
     @PostMapping
-    public String store(@Valid @ModelAttribute("guest") Guest guest, BindingResult result) {
-        if (result.hasErrors())
-            return "guest/_form";
+    public String store(@Valid @ModelAttribute("guest") Guest guest, BindingResult result,
+            RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            attributes.addFlashAttribute("org.springframework.validation.BindingResult.guest", result);
+            attributes.addFlashAttribute("guest", guest);
+            return "redirect:/guests/create";
+        }
         guestService.saveGuest(guest);
+        attributes.addFlashAttribute("message", "Berhasil menambahkan data tamu");
         return "redirect:/guests";
     }
 
@@ -56,22 +63,30 @@ public class GuestController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable Long id, Model model) {
-        Guest guest = guestService.getGuestById(id).orElseThrow(() -> new RuntimeException("Guest not found"));
-        model.addAttribute("guest", guest);
+        if (!model.containsAttribute("guest")) {
+            Guest guest = guestService.getGuestById(id).orElseThrow(() -> new RuntimeException("Guest not found"));
+            model.addAttribute("guest", guest);
+        }
         return "guest/_form";
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @Valid @ModelAttribute("guest") Guest guest, BindingResult result) {
-        if (result.hasErrors())
-            return "guest/_form";
+    public String update(@PathVariable Long id, @Valid @ModelAttribute("guest") Guest guest, BindingResult result,
+            RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            attributes.addFlashAttribute("org.springframework.validation.BindingResult.guest", result);
+            attributes.addFlashAttribute("guest", guest);
+            return "redirect:/guests/" + id + "/edit";
+        }
         guestService.updateGuest(id, guest);
+        attributes.addFlashAttribute("message", "Berhasil mengubah data tamu");
         return "redirect:/guests";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteGuest(@PathVariable Long id) {
+    public String deleteGuest(@PathVariable Long id, RedirectAttributes attributes) {
         guestService.deleteGuest(id);
+        attributes.addFlashAttribute("message", "Berhasil menghapus data tamu");
         return "redirect:/guests";
     }
 }

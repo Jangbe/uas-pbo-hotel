@@ -8,13 +8,12 @@
 <body>
     <div class="pd-20 card-box mb-30" layout:fragment="content">
         <div class="d-flex justify-content-between align-items-center mb-5">
-            <h4 class="text-blue h4 mb-0"
-                th:text="${room.roomId == null ? 'Buat Data Kamar' : 'Ubah Data Kamar'}">
+            <h4 class="text-blue h4 mb-0" th:text="${room.roomId == null ? 'Buat Data Kamar' : 'Ubah Data Kamar'}">
             </h4>
             <a href="/rooms" class="btn btn-primary btn-sm scroll-click"><i class="fa fa-back"></i> Kembali</a>
         </div>
-        <form th:action="@{${room.roomId == null} ? '/rooms' : '/rooms/' + ${room.roomId}}"
-            th:object="${room}" th:method="${room.roomId == null} ? 'post' : 'put'">
+        <form th:action="@{${room.roomId == null} ? '/rooms' : '/rooms/' + ${room.roomId}}" th:object="${room}"
+            th:method="${room.roomId == null} ? 'post' : 'put'">
             <input type="hidden" th:if="${room.roomId != null}" th:field="*{roomId}" />
             <div class="form-group row">
                 <label class="col-sm-12 col-md-4 col-form-label">Nomor Kamar</label>
@@ -41,8 +40,8 @@
                 <label class="col-sm-12 col-md-4 col-form-label">Kapasitas</label>
                 <div class="col-sm-12 col-md-8">
                     <input type="number"
-                           th:class="${'form-control ' + (#fields.hasErrors('capacity') ? 'is-invalid' : '')}"
-                           th:field="*{capacity}" />
+                        th:class="${'form-control ' + (#fields.hasErrors('capacity') ? 'is-invalid' : '')}"
+                        th:field="*{capacity}" />
                     <span class="invalid-feedback" th:errors="*{capacity}"></span>
                 </div>
             </div>
@@ -50,12 +49,12 @@
                 <label class="col-sm-12 col-md-4 col-form-label">Harga</label>
                 <div class="col-sm-12 col-md-8">
                     <input type="text"
-                           th:class="${'form-control ' + (#fields.hasErrors('pricePerNight') ? 'is-invalid' : '')}"
-                           th:field="*{pricePerNight}" />
+                        th:class="${'form-control ' + (#fields.hasErrors('pricePerNight') ? 'is-invalid' : '')}"
+                        th:field="*{pricePerNight}" />
                     <span class="invalid-feedback" th:errors="*{pricePerNight}"></span>
                 </div>
             </div>
-            
+
             <div class="form-group row">
                 <label class="col-sm-12 col-md-4 col-form-label">Status Booking</label>
                 <div class="col-sm-12 col-md-8">

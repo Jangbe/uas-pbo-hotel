@@ -1,7 +1,5 @@
 package com.kelompok1.hotel.model;
 
-import java.math.BigDecimal;
-
 import com.kelompok1.hotel.enums.RoomStatus;
 
 import jakarta.persistence.Column;
@@ -12,9 +10,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Data   
+@Data
 @Entity
 @Table(name = "rooms")
 public class Room {
@@ -24,18 +24,23 @@ public class Room {
     @Column()
     private Integer roomId;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Nomor ruang tidak boleh kosong")
+    @Column()
     private String roomNumber;
 
+    @NotNull(message = "Tipe ruangang tidak boleh kosong")
     @Column()
     private String roomType;
 
+    @NotNull(message = "Kapasitas tidak boleh kosong")
     @Column()
     private Integer capacity;
 
+    @NotNull(message = "Harga tidak boleh kosong")
     @Column()
     private Double pricePerNight;
 
+    @NotNull(message = "Status tidak boleh kosong")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoomStatus status;

@@ -20,6 +20,11 @@
 
     <link rel="stylesheet" type="text/css" href="/src/plugins/datatables/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" type="text/css" href="/src/plugins/datatables/css/responsive.bootstrap4.min.css" />
+    <style>
+        .swal2-container {
+            z-index: 999999;
+        }
+    </style>
 
     <script src="/public/scripts/core.min.js"></script>
     <script src="/public/scripts/script.js"></script>
@@ -234,6 +239,24 @@
     <script src="/src/plugins/datatables/js/vfs_fonts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script th:if="${message}" th:inline="javascript">
+        /*<![CDATA[*/
+        var message = /*[[${message}]]*/ 'default';
+        Swal.fire({
+            toast: true,
+            title: message,
+            icon: 'success',
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        })
+        /*]]>*/
+    </script>
 </body>
 
 </html>

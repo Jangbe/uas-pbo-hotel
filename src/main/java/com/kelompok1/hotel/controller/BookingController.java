@@ -68,13 +68,15 @@ public class BookingController {
         }
         Double total = booking.getRoom().getPricePerNight();
         List<com.kelompok1.hotel.model.BookingService> bServices = new LinkedList<>();
-        for (com.kelompok1.hotel.model.BookingService bs : booking.getBookingServices()) {
-            com.kelompok1.hotel.model.Service s = bs.getService();
-            if (s != null) {
-                bs.setBooking(booking);
-                bs.setTotalPrice(s.getPrice() * bs.getQuantity());
-                total += bs.getTotalPrice();
-                bServices.add(bs);
+        if (booking.getBookingServices() != null) {
+            for (com.kelompok1.hotel.model.BookingService bs : booking.getBookingServices()) {
+                com.kelompok1.hotel.model.Service s = bs.getService();
+                if (s != null) {
+                    bs.setBooking(booking);
+                    bs.setTotalPrice(s.getPrice() * bs.getQuantity());
+                    total += bs.getTotalPrice();
+                    bServices.add(bs);
+                }
             }
         }
         booking.setTotalAmount(total);
@@ -82,6 +84,7 @@ public class BookingController {
         bookingService.saveBooking(booking);
         roomService.updateRoomStatus(booking.getRoom().getRoomId(),
                 booking.getStatus() == BookingStatus.CheckedOut ? RoomStatus.Available : RoomStatus.Occupied);
+        attributes.addFlashAttribute("message", "Berhasil menambah data booking");
         return "redirect:/bookings";
     }
 
@@ -145,12 +148,14 @@ public class BookingController {
         }
         roomService.updateRoomStatus(booking.getRoom().getRoomId(),
                 booking.getStatus() == BookingStatus.CheckedOut ? RoomStatus.Available : RoomStatus.Occupied);
+        attributes.addFlashAttribute("message", "Berhasil mengubah data booking");
         return "redirect:/bookings";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteBooking(@PathVariable Long id) {
+    public String deleteBooking(@PathVariable Long id, RedirectAttributes attributes) {
         bookingService.deleteBooking(id);
+        attributes.addFlashAttribute("message", "Berhasil menghapus data booking");
         return "redirect:/bookings";
     }
 }

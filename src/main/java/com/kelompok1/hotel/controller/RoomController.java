@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kelompok1.hotel.model.Room;
 import com.kelompok1.hotel.service.RoomService;
@@ -28,21 +29,25 @@ public class RoomController {
     public String main(Model model) {
         List<Room> rooms = roomService.getAllRooms();
         model.addAttribute("rooms", rooms);
-        return "rooms/index"; 
+        return "room/index";
     }
 
     @GetMapping("/create")
     public String create(Model model) {
-        model.addAttribute("room", new Room());
-        return "rooms/_form"; 
+        if (!model.containsAttribute("room"))
+            model.addAttribute("room", new Room());
+        return "room/_form";
     }
 
     @PostMapping
-    public String store(@Valid Room room, BindingResult result) {
+    public String store(@Valid Room room, BindingResult result, RedirectAttributes attributes) {
         if (result.hasErrors()) {
-            return "rooms/_form";
+            attributes.addFlashAttribute("org.springframework.validation.BindingResult.room", result);
+            attributes.addFlashAttribute("room", room);
+            return "redirect:/rooms/create";
         }
         roomService.saveRoom(room);
+        attributes.addFlashAttribute("message", "Berhasil menambah data kamar");
         return "redirect:/rooms";
     }
 
@@ -55,24 +60,31 @@ public class RoomController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable Integer id, Model model) {
-        Room room = roomService.getRoomById(id)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
-        model.addAttribute("room", room);
-        return "rooms/_form"; 
+        if (!model.containsAttribute("room")) {
+            Room room = roomService.getRoomById(id)
+                    .orElseThrow(() -> new RuntimeException("Room not found"));
+            model.addAttribute("room", room);
+        }
+        return "room/_form";
     }
 
     @PutMapping("/{id}")
     public String update(@PathVariable Integer id, @Valid @ModelAttribute("room") Room room,
-            BindingResult result) {
-        if (result.hasErrors())
-            return "rooms/_form";
+            BindingResult result, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            attributes.addFlashAttribute("org.springframework.validation.BindingResult.room", result);
+            attributes.addFlashAttribute("room", room);
+            return "redirect:/rooms/" + id + "/edit";
+        }
         roomService.updateRoom(id, room);
+        attributes.addFlashAttribute("message", "Berhasil mengubah data kamar");
         return "redirect:/rooms";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRoom(@PathVariable Integer id) {
+    public String deleteRoom(@PathVariable Integer id, RedirectAttributes attributes) {
         roomService.deleteRoom(id);
+        attributes.addFlashAttribute("message", "Berhasil menghapus data kamar");
         return "redirect:/rooms";
     }
 }
