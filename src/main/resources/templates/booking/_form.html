@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Booking</title>
+</head>
+
+<body>
+    <div class="pd-20 card-box mb-30" layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h4 class="text-blue h4 mb-0"
+                th:text="@{${booking.bookingId} == null ? 'Buat Data Booking' : 'Ubah Data Booking'}">
+            </h4>
+            <a href="/bookings" class="btn btn-primary btn-sm scroll-click"><i class="fa fa-back"></i> Kembali</a>
+        </div>
+        <form th:action="@{${booking.bookingId} == null ? '/bookings' : '/bookings/' + ${booking.bookingId}}"
+            th:object="${booking}" th:method="@{${booking.bookingId} == null ? 'POST' : 'PUT'}">
+            <ul class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+            </ul>
+            <input type="hidden" th:if="${booking.bookingId != null}" th:field="*{bookingId}" />
+            <div class="row g2">
+                <div class="col-md-6 col-12">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label text-right">Nama Pelanggan</label>
+                        <div class="col-sm-12 col-md-8">
+                            <select type="text"
+                                th:class="${'form-control ' + (#fields.hasErrors('guest')? 'is-invalid':'') }"
+                                th:field="*{guest}">
+                                <option value="">---PILIH PELANGGAN---</option>
+                                <option th:each="g : ${guests}" th:value="${g.guestId}"
+                                    th:text="${g.firstName + ' ' + g.lastName}">
+                                </option>
+                            </select>
+                            <span class="invalid-feedback" th:errors="*{guest}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label text-right">Ruangan</label>
+                        <div class="col-sm-12 col-md-8">
+                            <select th:class="${'form-control ' + (#fields.hasErrors('room')? 'is-invalid':'') }"
+                                th:field="*{room}">
+                                <option value="">---PILIH RUANGAN---</option>
+                                <option th:each="r : ${rooms}" th:value="${r.roomId}" th:data-price="${r.pricePerNight}"
+                                    th:text="${r.roomNumber + ' (' + r.roomType + ') - ' + r.capacity + ' = Rp. '+ #numbers.formatDecimal(r.pricePerNight, 0, 'POINT', 0, 'COMMA')}">
+                                </option>
+                            </select>
+                            <span class="invalid-feedback" th:errors="*{room}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label text-right">Cek in</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="datetime-local"
+                                th:class="${'form-control ' + (#fields.hasErrors('checkInDate')? 'is-invalid':'') }"
+                                th:field="*{checkInDate}" />
+                            <span class="invalid-feedback" th:errors="*{checkInDate}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label text-right">Cek out</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="datetime-local"
+                                th:class="${'form-control ' + (#fields.hasErrors('checkOutDate')? 'is-invalid':'') }"
+                                th:field="*{checkOutDate}" />
+                            <span class="invalid-feedback" th:errors="*{checkOutDate}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label text-right">Status</label>
+                        <div class="col-sm-12 col-md-8">
+                            <select th:class="${'form-control ' + (#fields.hasErrors('status')? 'is-invalid':'') }"
+                                th:field="*{status}">
+                                <option value="Booked">Dibooking</option>
+                                <option value="Cancelled">Dibatalkan</option>
+                                <option value="CheckedIn">Sudah cek in</option>
+                                <option value="CheckedOut">Sudah cek out</option>
+                            </select>
+                            <span class="invalid-feedback" th:errors="*{status}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label text-right">Total Amount</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="number" disabled
+                                th:class="${'form-control ' + (#fields.hasErrors('totalAmount')? 'is-invalid':'') }"
+                                th:field="*{totalAmount}" />
+                            <span class="invalid-feedback" th:errors="*{totalAmount}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12" id="services-list">
+                    <h4 class="d-flex justify-content-between mb-2">
+                        Layanan
+                        <button class="btn btn-sm btn-info" type="button" id="add-service">
+                            Tambah
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </h4>
+                    <div class="form-group mb-1" th:each="ser, iterStat : *{bookingServices}">
+                        <input type="hidden"
+                            th:field="${booking.bookingServices[__${iterStat.index}__].bookingServiceId}">
+                        <input type="hidden" th:name="|bookingServices[${iterStat.index}].bookingId|"
+                            th:value="${booking.bookingId}">
+                        <div class="input-group input-group-sm mb-1">
+                            <select class="form-control service" style="min-width: 100px;"
+                                th:field="${booking.bookingServices[__${iterStat.index}__].service}">
+                                <option th:each="s : ${services}" th:data-price="${s.price}" th:value="${s.serviceId}"
+                                    th:text="${s.serviceName}" />
+                            </select>
+                            <input type="number" style="max-width: 80px;"
+                                th:field="${booking.bookingServices[__${iterStat.index}__].quantity}"
+                                class="form-control quantity" min="1">
+                            <input type="number" style="min-width: 100px;" disabled
+                                th:field="${booking.bookingServices[__${iterStat.index}__].totalPrice}"
+                                class="form-control total-price">
+                            <span class="input-group-text bg-danger text-white" onclick="removeRow(this)"
+                                style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                <i class="fa fa-trash"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit" th:if="${booking.bookingId == null}">Simpan</button>
+                <button class="btn btn-success" type="submit" th:if="${booking.bookingId != null}">Ubah</button>
+            </div>
+        </form>
+        <div id="service-template" class="d-none">
+            <div class="form-group mb-1">
+                <input type="hidden" name="bookingServices[__INDEX__].bookingId" th:value="${booking.bookingId}">
+                <div class="input-group input-group-sm mb-1">
+                    <select class="form-control service" style="min-width: 100px;"
+                        name="bookingServices[__INDEX__].service">
+                        <option th:each="s : ${services}" th:data-price="${s.price}" th:value="${s.serviceId}"
+                            th:text="${s.serviceName}" />
+                    </select>
+                    <input type="number" style="max-width: 80px;" name="bookingServices[__INDEX__].quantity"
+                        class="form-control quantity" min="1">
+                    <input type="number" style="min-width: 100px;" disabled name="bookingServices[__INDEX__].totalPrice"
+                        class="form-control total-price">
+                    <span class="input-group-text bg-danger text-white" onclick="removeRow(this)"
+                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                        <i class="fa fa-trash"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('a[href="/bookings"]').addClass('active')
+            var index = $("#services-list").children().length;
+            $('#add-service').on('click', function (e) {
+                e.preventDefault();
+                var newService = $("#service-template").html().replace(/__INDEX__/g, index);
+                $("#services-list").append(newService);
+                index++;
+            })
+            function removeRow(node) {
+                $(node).parent().parent().remove()
+            }
+            $(document).on('change', '#room', calculateTotalPrice);
+            $(document).on('change', '.service', function () {
+                var price = $(this).find(':selected').data('price');
+                $(this).next().next().val(price * $(this).next().val());
+                calculateTotalPrice()
+            })
+            $(document).on('change', '.quantity', function () {
+                var price = $(this).prev().find(':selected').data('price');
+                $(this).next().val(price * $(this).val());
+                calculateTotalPrice()
+            })
+            function calculateTotalPrice() {
+                let total = parseFloat($('#room').find(':selected').data('price'));
+                if (isNaN(total)) total = 0;
+                $('.total-price').each((k, node) => {
+                    let st = parseFloat($(node).val() ?? 0);
+                    total += isNaN(st) ? 0 : st;
+                })
+                $('#totalAmount').val(total);
+            }
+            calculateTotalPrice()
+        </script>
+    </div>
+</body>
+
+</html>
