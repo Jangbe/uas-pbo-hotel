@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="utf-8" />
@@ -23,6 +24,10 @@
     <style>
         .swal2-container {
             z-index: 999999;
+        }
+
+        .col-form-label {
+            text-align: right;
         }
     </style>
 
@@ -74,11 +79,14 @@
                         <span class="user-icon">
                             <img src="/public/images/photo1.jpg" alt="" />
                         </span>
-                        <span class="user-name">Ross C. Lopez</span>
+                        <span class="user-name" sec:authentication="name"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        <a class="dropdown-item" href="/profile.html"><i class="dw dw-user1"></i> Profile</a>
-                        <a class="dropdown-item" href="/login.html"><i class="dw dw-logout"></i> Log Out</a>
+                        <!-- <a class="dropdown-item" href="/profile.html"><i class="dw dw-user1"></i> Profile</a> -->
+                        <a class="dropdown-item" href="#" onclick="logout(this)">
+                            <i class="dw dw-logout"></i> Log Out
+                        </a>
+                        <form action="/logout" method="post" id="logout"></form>
                     </div>
                 </div>
             </div>
@@ -209,6 +217,11 @@
                             <span class="micon bi bi-journal-album"></span><span class="mtext">Booking</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="/employees" class="dropdown-toggle no-arrow">
+                            <span class="micon bi bi-person-square"></span><span class="mtext">Pegawai</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -239,6 +252,11 @@
     <script src="/src/plugins/datatables/js/vfs_fonts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+        function logout(e) {
+            $(e).next().submit();
+        }
+    </script>
     <script th:if="${message}" th:inline="javascript">
         /*<![CDATA[*/
         var message = /*[[${message}]]*/ 'default';

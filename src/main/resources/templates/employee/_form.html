@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}">
+
+<head>
+    <title>Form Pegawai</title>
+</head>
+
+<body>
+    <div class="pd-20 card-box mb-30" layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h4 class="text-blue h4 mb-0"
+                th:text="@{${employee.employeeId} == null ? 'Buat Data Pegawai' : 'Ubah Data Pegawai'}">
+            </h4>
+            <a href="/employees" class="btn btn-primary btn-sm scroll-click"><i class="fa fa-back"></i> Kembali</a>
+        </div>
+        <form th:action="@{${employee.employeeId} == null ? '/employees' : '/employees/' + ${employee.employeeId}}"
+            th:object="${employee}" th:method="@{${employee.employeeId} == null ? 'POST' : 'PUT'}">
+            <input type="hidden" th:if="${employee.employeeId != null}" th:field="*{employeeId}" />
+            <div class="row g-2">
+                <div class="col-md-6 col-12">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Nama Pegawai</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="text"
+                                th:class="${'form-control ' + (#fields.hasErrors('name')? 'is-invalid':'') }"
+                                th:field="*{name}" />
+                            <span class="invalid-feedback" th:errors="*{name}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Email</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="email"
+                                th:class="${'form-control ' + (#fields.hasErrors('email')? 'is-invalid':'') }"
+                                th:field="*{email}" />
+                            <span class="invalid-feedback" th:errors="*{email}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">No HP</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="text" inputmode="tel"
+                                th:class="${'form-control ' + (#fields.hasErrors('phoneNumber')? 'is-invalid':'') }"
+                                th:field="*{phoneNumber}" />
+                            <span class="invalid-feedback" th:errors="*{phoneNumber}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Posisi</label>
+                        <div class="col-sm-12 col-md-8">
+                            <select th:class="${'form-control ' + (#fields.hasErrors('position')? 'is-invalid':'') }"
+                                th:field="*{position}">
+                                <option value="Admin">Admin</option>
+                                <option value="Manager">Manajer</option>
+                                <option value="Receptionist">Resepsionis</option>
+                            </select>
+                            <span class="invalid-feedback" th:errors="*{position}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Gaji</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="text" inputmode="numeric"
+                                th:class="${'form-control ' + (#fields.hasErrors('salary')? 'is-invalid':'') }"
+                                th:field="*{salary}" />
+                            <span class="invalid-feedback" th:errors="*{salary}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Tanggal Masuk</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="date"
+                                th:class="${'form-control ' + (#fields.hasErrors('hireDate')? 'is-invalid':'') }"
+                                th:field="*{hireDate}" />
+                            <span class="invalid-feedback" th:errors="*{hireDate}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Katasandi Login</label>
+                        <div class="col-sm-12 col-md-8">
+                            <input type="password"
+                                th:class="${'form-control ' + (#fields.hasErrors('password')? 'is-invalid':'') }"
+                                th:field="*{password}" />
+                            <span class="invalid-feedback" th:errors="*{password}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-4 col-form-label">Alamat</label>
+                        <div class="col-sm-12 col-md-8">
+                            <textarea th:class="${'form-control ' + (#fields.hasErrors('address')? 'is-invalid':'') }"
+                                th:field="*{address}" />
+                            <span class="invalid-feedback" th:errors="*{address}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit" th:if="${employee.employeeId == null}">Simpan</button>
+                <button class="btn btn-success" type="submit" th:if="${employee.employeeId != null}">Ubah</button>
+            </div>
+        </form>
+        <script>$('a[href="/employees"]').addClass('active')</script>
+    </div>
+</body>
+
+</html>

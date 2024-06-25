@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Pegawai</title>
+</head>
+
+<body>
+    <div class="card-box mb-30" layout:fragment="content">
+        <div class="pd-20 d-flex justify-content-between align-items-center">
+            <h4 class="text-blue h4 mb-0">Data Pegawai</h4>
+            <a href="/employees/create" class="btn btn-sm btn-success">Tambah</a>
+        </div>
+        <div class="pb-20">
+            <table class="data-table table stripe hover nowrap">
+                <thead>
+                    <tr>
+                        <th class="table-plus">Nama Pegawai</th>
+                        <th>Email</th>
+                        <th>NO HP</th>
+                        <th>Posisi</th>
+                        <th>Gaji</th>
+                        <th>Tanggal Masuk</th>
+                        <th>Alamat</th>
+                        <th class="datatable-nosort">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="row : ${employees}">
+                        <td class="table-plus" th:text="${row.name}"></td>
+                        <td th:text="${row.email}"></td>
+                        <td th:text="${row.phoneNumber}"></td>
+                        <td th:text="${row.position}"></td>
+                        <td th:text="${'Rp. '+#numbers.formatDecimal(row.salary, 0, 'POINT', 0, 'COMMA')}"></td>
+                        <td th:text="${row.hireDate}"></td>
+                        <td th:text="${row.address}"></td>
+                        <td>
+                            <div class="dropdown">
+                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
+                                    role="button" data-toggle="dropdown">
+                                    <i class="dw dw-more"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                    <a class="dropdown-item" th:href="@{/employees/{id}/edit(id=${row.employeeId})}"><i
+                                            class="dw dw-edit2"></i> Edit</a>
+                                    <a class="dropdown-item" href="#" onclick="showConfirmDelete(this)">
+                                        <i class="dw dw-delete-3"></i>
+                                        Delete
+                                    </a>
+                                    <form th:action="@{/employees/{id}(id=${row.employeeId})}" method="post"
+                                        style="display:inline">
+                                        <input type="hidden" name="_method" value="delete" />
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <script>
+            $('a[href="/employees"]').addClass('active')
+        </script>
+    </div>
+</body>
+
+</html>
