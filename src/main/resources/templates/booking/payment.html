@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="d-flex justify-content-between">
+    <div layout:fragment="content" class="d-flex justify-content-between">
         <div class="pd-20 card-box mb-30" style="width: 45%;" layout:fragment="content">
             <div class="d-flex justify-content-between align-items-center mb-5">
                 <h4 class="text-blue h4 mb-0" th:text="${payment.paymentId == null ? 'Buat Data Pembayaran' : 'Ubah Data Pembayaran'}"></h4>
@@ -56,7 +56,7 @@
                 </div>
             </form>
         </div>
-        <div class="card-box mb-30" style="width: 50%;" layout:fragment="content">
+        <div class="card-box mb-30" style="width: 50%;">
             <div class="pd-20 d-flex justify-content-between align-items-center">
                 <h4 class="text-blue h4 mb-0">Data Pembayaran</h4>
             </div>
