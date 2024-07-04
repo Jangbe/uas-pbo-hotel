@@ -5,38 +5,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Booking</title>
+    <title>Data Pembayaran</title>
 </head>
 
 <body>
     <div class="card-box mb-30" layout:fragment="content">
         <div class="pd-20 d-flex justify-content-between align-items-center">
-            <h4 class="text-blue h4 mb-0">Data Booking</h4>
-            <a href="/bookings/create" class="btn btn-sm btn-success">Tambah</a>
+            <h4 class="text-blue h4 mb-0">Data Pembayaran</h4>
         </div>
         <div class="pb-20">
             <table class="data-table table stripe hover nowrap">
                 <thead>
                     <tr>
-                        <th class="table-plus">Pelanggan</th>
-                        <th>Ruangan</th>
-                        <th>Cek in</th>
-                        <th>Cek out</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Dibuat</th>
+                        <th>Tanggal Pembayaran</th>
+                        <th>Jumlah</th>
+                        <th>Metode Pembayaran</th>
                         <th class="datatable-nosort">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="row : ${bookings}">
-                        <td class="table-plus" th:text="|${row.guest.firstName} ${row.guest.lastName}|"></td>
-                        <td th:text="${row.room.roomNumber}"></td>
-                        <td th:text="${#dates.format(row.checkInDate, 'Y-M-d hh:mm:ss')}"></td>
-                        <td th:text="${#dates.format(row.checkOutDate, 'Y-M-d hh:mm:ss')}"></td>
-                        <td th:text="${'Rp. ' + #numbers.formatDecimal(row.totalAmount, 0, 'POINT', 0, 'COMMA')}"></td>
-                        <td th:text="${row.status}"></td>
-                        <td th:text="${row.createdAt}"></td>
+                    <tr th:each="payment : ${payments}">
+                        <td th:text="${#dates.format(payment.paymentDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${'Rp. '+#numbers.formatDecimal(payment.amount, 2, 'POINT', 0, 'COMMA')}"></td>
+                        <td th:text="${payment.paymentMethod}"></td>
                         <td>
                             <div class="dropdown">
                                 <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
@@ -44,15 +35,13 @@
                                     <i class="dw dw-more"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                    <a class="dropdown-item" th:href="@{/bookings/{id}/edit(id=${row.bookingId})}"><i
+                                    <a class="dropdown-item" th:href="@{/payments/{id}/edit(id=${payment.paymentId})}"><i
                                             class="dw dw-edit2"></i> Edit</a>
                                     <a class="dropdown-item" href="#" onclick="showConfirmDelete(this)">
                                         <i class="dw dw-delete-3"></i>
                                         Delete
                                     </a>
-                                    <a class="dropdown-item" th:href="@{/payments/create?bookingId={bookingId}(bookingId=${row.bookingId})}"><i
-                                            class="dw dw-money"></i> Pembayaran</a>
-                                    <form th:action="@{/bookings/{id}(id=${row.bookingId})}" method="post"
+                                    <form th:action="@{/payments/{id}(id=${payment.paymentId})}" method="post"
                                         style="display:inline">
                                         <input type="hidden" name="_method" value="delete" />
                                     </form>
@@ -64,7 +53,7 @@
             </table>
         </div>
         <script>
-            $('a[href="/bookings"]').addClass('active')
+            $('a[href="/payments"]').addClass('active')
         </script>
     </div>
 </body>
