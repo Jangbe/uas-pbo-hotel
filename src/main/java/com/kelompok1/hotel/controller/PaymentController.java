@@ -41,7 +41,7 @@ public class PaymentController {
     public String main(Model model) {
         List<Payment> payments = paymentService.getAllPayments();
         model.addAttribute("payments", payments);
-        return "payments/index";
+        return "booking/payment";
     }
 
     @GetMapping("/create")
@@ -51,7 +51,7 @@ public class PaymentController {
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
         payment.setBooking(booking);
         model.addAttribute("payment", payment);
-        return "payments/_form";
+        return "booking/payment";
     }
 
     @PostMapping
@@ -80,7 +80,7 @@ public class PaymentController {
                     .orElseThrow(() -> new RuntimeException("Payment not found"));
             model.addAttribute("payment", payment);
         }
-        return "payments/_form";
+        return "booking/payment";
     }
 
     @PutMapping("/{id}")
