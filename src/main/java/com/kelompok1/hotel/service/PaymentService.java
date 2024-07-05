@@ -29,7 +29,7 @@ public class PaymentService {
 
     public Payment updatePayment(Long id, Payment paymentDetails) {
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("Payment not found"));
-        payment.setBookingId(paymentDetails.getBookingId());
+        payment.setBooking(paymentDetails.getBooking());
         payment.setPaymentDate(paymentDetails.getPaymentDate());
         payment.setAmount(paymentDetails.getAmount());
         payment.setPaymentMethod(paymentDetails.getPaymentMethod());

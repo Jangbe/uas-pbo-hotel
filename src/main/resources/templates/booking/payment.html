@@ -9,103 +9,113 @@
 </head>
 
 <body>
-    <div layout:fragment="content" class="d-flex justify-content-between">
-        <div class="pd-20 card-box mb-30" style="width: 45%;" layout:fragment="content">
-            <div class="d-flex justify-content-between align-items-center mb-5">
-                <h4 class="text-blue h4 mb-0" th:text="${payment.paymentId == null ? 'Buat Data Pembayaran' : 'Ubah Data Pembayaran'}"></h4>
-                <a href="/bookings" class="btn btn-primary btn-sm scroll-click"><i class="fa fa-back"></i> Kembali</a>
-            </div>
-            <form th:action="@{${payment.paymentId == null} ? '/payments' : '/payments/' + ${payment.paymentId}}"
-                th:object="${payment}" th:method="${payment.paymentId == null} ? 'post' : 'put'">
-                <input type="hidden" th:if="${payment.paymentId != null}" th:field="*{paymentId}" />
-                <input type="hidden" th:field="*{booking.bookingId}" />
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-4 col-form-label">Tanggal Pembayaran</label>
-                    <div class="col-sm-12 col-md-8">
-                        <input type="date"
-                            th:class="${'form-control ' + (#fields.hasErrors('paymentDate') ? 'is-invalid' : '')}"
-                            th:field="*{paymentDate}" />
-                        <span class="invalid-feedback" th:errors="*{paymentDate}"></span>
-                    </div>
+    <div layout:fragment="content" class="row">
+        <div class="col-md-6 col-12">
+            <div class="card-box mb-30">
+                <div class="pd-20 d-flex justify-content-between align-items-center">
+                    <h4 class="text-blue h4 mb-0">Data Pembayaran</h4>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-4 col-form-label">Jumlah</label>
-                    <div class="col-sm-12 col-md-8">
-                        <input type="number" step="0.01"
-                            th:class="${'form-control ' + (#fields.hasErrors('amount') ? 'is-invalid' : '')}"
-                            th:field="*{amount}" />
-                        <span class="invalid-feedback" th:errors="*{amount}"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-12 col-md-4 col-form-label">Metode Pembayaran</label>
-                    <div class="col-sm-12 col-md-8">
-                        <select th:class="${'form-control ' + (#fields.hasErrors('paymentMethod') ? 'is-invalid' : '')}"
-                            th:field="*{paymentMethod}">
-                            <option value="CREDIT_CARD">Kartu Kredit</option>
-                            <option value="DEBIT_CARD">Kartu Debit</option>
-                            <option value="CASH">Tunai</option>
-                            <option value="BANK_TRANSFER">Transfer Bank</option>
-                        </select>
-                        <span class="invalid-feedback" th:errors="*{paymentMethod}"></span>
-                    </div>
-                </div>
-                <div>
-                    <button class="btn btn-success" type="submit" th:if="${payment.paymentId == null}">Simpan</button>
-                    <button class="btn btn-success" type="submit" th:if="${payment.paymentId != null}">Ubah</button>
-                </div>
-            </form>
-        </div>
-        <div class="card-box mb-30" style="width: 50%;">
-            <div class="pd-20 d-flex justify-content-between align-items-center">
-                <h4 class="text-blue h4 mb-0">Data Pembayaran</h4>
-            </div>
-            <div class="pb-20">
-                <table class="data-table table stripe hover nowrap">
-                    <thead>
-                        <tr>
-                            <th>Tanggal Pembayaran</th>
-                            <th>Jumlah</th>
-                            <th>Metode Pembayaran</th>
-                            <th class="datatable-nosort">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="payment : ${payments}">
-                            <td th:text="${#dates.format(payment.paymentDate, 'yyyy-MM-dd')}"></td>
-                            <td th:text="${'Rp. '+#numbers.formatDecimal(payment.amount, 2, 'POINT', 0, 'COMMA')}"></td>
-                            <td th:text="${payment.paymentMethod}"></td>
-                            <td>
-                                <div class="dropdown">
-                                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
-                                        role="button" data-toggle="dropdown">
-                                        <i class="dw dw-more"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                        <a class="dropdown-item" th:href="@{/payments/{id}/edit(id=${payment.paymentId})}"><i
-                                                class="dw dw-edit2"></i> Edit</a>
-                                        <a class="dropdown-item" href="#" onclick="showConfirmDelete(this)">
-                                            <i class="dw dw-delete-3"></i>
-                                            Delete
+                <div class="pb-20">
+                    <table class="table stripe hover nowrap">
+                        <thead>
+                            <tr>
+                                <th>Tanggal Pembayaran</th>
+                                <th>Jumlah</th>
+                                <th>Metode Pembayaran</th>
+                                <th class="datatable-nosort">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="payment : ${payments}">
+                                <td th:text="${#dates.format(payment.paymentDate, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${'Rp. '+#numbers.formatDecimal(payment.amount, 2, 'POINT', 0, 'COMMA')}">
+                                </td>
+                                <td th:text="${payment.paymentMethod}"></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
+                                            href="#" role="button" data-toggle="dropdown">
+                                            <i class="dw dw-more"></i>
                                         </a>
-                                        <form th:action="@{/payments/{id}(id=${payment.paymentId})}" method="post"
-                                            style="display:inline">
-                                            <input type="hidden" name="_method" value="delete" />
-                                        </form>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                            <a class="dropdown-item"
+                                                th:href="@{/payments/{id}/edit(id=${payment.paymentId})}"><i
+                                                    class="dw dw-edit2"></i> Edit</a>
+                                            <a class="dropdown-item" href="#" onclick="showConfirmDelete(this)">
+                                                <i class="dw dw-delete-3"></i>
+                                                Delete
+                                            </a>
+                                            <form th:action="@{/payments/{id}(id=${payment.paymentId})}" method="post"
+                                                style="display:inline">
+                                                <input type="hidden" name="_method" value="delete" />
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+        <div class="col-md-6 col-12">
+            <div class="pd-20 card-box mb-30">
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h4 class="text-blue h4 mb-0"
+                        th:text="${payment.paymentId == null ? 'Buat Data Pembayaran' : 'Ubah Data Pembayaran'}"></h4>
+                    <a href="/bookings" class="btn btn-primary btn-sm scroll-click"><i class="fa fa-back"></i>
+                        Kembali</a>
+                </div>
+                <form th:action="@{${payment.paymentId == null} ? '/payments' : '/payments/' + ${payment.paymentId}}"
+                    th:object="${payment}" th:method="${payment.paymentId == null} ? 'post' : 'put'">
+                    <input type="hidden" th:if="${payment.paymentId != null}" th:field="*{paymentId}" />
+                    <input type="hidden" th:field="*{booking.bookingId}" />
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-5 col-form-label">Tanggal Pembayaran</label>
+                        <div class="col-sm-12 col-md-7">
+                            <input type="date"
+                                th:class="${'form-control ' + (#fields.hasErrors('paymentDate') ? 'is-invalid' : '')}"
+                                th:field="*{paymentDate}" />
+                            <span class="invalid-feedback" th:errors="*{paymentDate}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-5 col-form-label">Jumlah</label>
+                        <div class="col-sm-12 col-md-7">
+                            <input type="number" step="0.01"
+                                th:class="${'form-control ' + (#fields.hasErrors('amount') ? 'is-invalid' : '')}"
+                                th:field="*{amount}" />
+                            <span class="invalid-feedback" th:errors="*{amount}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-5 col-form-label">Metode Pembayaran</label>
+                        <div class="col-sm-12 col-md-7">
+                            <select
+                                th:class="${'form-control ' + (#fields.hasErrors('paymentMethod') ? 'is-invalid' : '')}"
+                                th:field="*{paymentMethod}">
+                                <option value="CREDIT_CARD">Kartu Kredit</option>
+                                <option value="DEBIT_CARD">Kartu Debit</option>
+                                <option value="CASH">Tunai</option>
+                                <option value="BANK_TRANSFER">Transfer Bank</option>
+                            </select>
+                            <span class="invalid-feedback" th:errors="*{paymentMethod}"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-success" type="submit"
+                            th:if="${payment.paymentId == null}">Simpan</button>
+                        <button class="btn btn-success" type="submit" th:if="${payment.paymentId != null}">Ubah</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            $('a[href="/bookings"]').addClass('active');
+            /*]]>*/
+        </script>
     </div>
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        $('a[href="/payments"]').addClass('active');
-        /*]]>*/
-    </script>
 </body>
 
 </html>
