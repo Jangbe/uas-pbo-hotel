@@ -50,8 +50,9 @@
                                         <i class="dw dw-delete-3"></i>
                                         Delete
                                     </a>
-                                    <a class="dropdown-item" th:href="@{/payments/create(bookingId=${row.bookingId})}">
-                                        <i class="dw dw-money"></i> Pembayaran </a>
+                                    <a class="dropdown-item" th:href="@{/payments/booking/{id}/payment(id=${row.bookingId})}">
+                                        <i class="dw dw-money"></i> Pembayaran
+                                    </a>
                                     <form th:action="@{/bookings/{id}(id=${row.bookingId})}" method="post"
                                         style="display:inline">
                                         <input type="hidden" name="_method" value="delete" />

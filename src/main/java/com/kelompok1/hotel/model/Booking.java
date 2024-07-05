@@ -52,6 +52,9 @@ public class Booking {
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     List<BookingService> bookingServices;
 
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<Payment> payments;
+
     public Booking(){
         this.createdAt = new Date();
     }

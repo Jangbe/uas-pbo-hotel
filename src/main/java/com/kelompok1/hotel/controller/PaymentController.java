@@ -44,8 +44,8 @@ public class PaymentController {
         return "booking/payment";
     }
 
-    @GetMapping("/create")
-    public String create(Model model, @RequestParam("bookingId") Long bookingId) {
+    @GetMapping("/booking/{id}/payment")
+    public String create(@PathVariable("id") Long bookingId, Model model) {
         Payment payment = new Payment();
         Booking booking = bookingService.getBookingById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
@@ -73,8 +73,8 @@ public class PaymentController {
         return ResponseEntity.ok(payment);
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(@PathVariable Long id, Model model) {
+    @GetMapping("/booking/{id_booking}/payment/{id_payment}/edit")
+    public String edit(@PathVariable("id_payment") Long id, Model model) {
         if (!model.containsAttribute("payment")) {
             Payment payment = paymentService.getPaymentById(id)
                     .orElseThrow(() -> new RuntimeException("Payment not found"));
