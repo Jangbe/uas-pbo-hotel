@@ -108,9 +108,4 @@ public class PaymentController {
         attributes.addFlashAttribute("message", "Berhasil menghapus data pembayaran");
         return "redirect:/payments/booking/" + bookingId + "/payment";
     }
-
-    @GetMapping("/booking/{id}/payment/cancel")
-    public String cancelPayment(@PathVariable("id") Long bookingId) {
-        return "redirect:/payments/booking/" + bookingId + "/payment";
-    }
 }
