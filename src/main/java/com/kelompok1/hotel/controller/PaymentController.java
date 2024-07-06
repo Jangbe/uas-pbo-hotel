@@ -101,8 +101,16 @@ public class PaymentController {
 
     @DeleteMapping("/{id}")
     public String deletePayment(@PathVariable Long id, RedirectAttributes attributes) {
+        Payment payment = paymentService.getPaymentById(id)
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
+        Long bookingId = payment.getBooking().getBookingId();
         paymentService.deletePayment(id);
         attributes.addFlashAttribute("message", "Berhasil menghapus data pembayaran");
-        return "redirect:/payments";
+        return "redirect:/payments/booking/" + bookingId + "/payment";
+    }
+
+    @GetMapping("/booking/{id}/payment/cancel")
+    public String cancelPayment(@PathVariable("id") Long bookingId) {
+        return "redirect:/payments/booking/" + bookingId + "/payment";
     }
 }
