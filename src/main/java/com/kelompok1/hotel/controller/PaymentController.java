@@ -76,13 +76,13 @@ public class PaymentController {
         return ResponseEntity.ok(payment);
     }
 
-    @GetMapping("/booking/{id_booking}/payment/{id_payment}/edit")
-    public String edit(@PathVariable("id_payment") Long id, Model model) {
-        if (!model.containsAttribute("payment")) {
-            Payment payment = paymentService.getPaymentById(id)
-                    .orElseThrow(() -> new RuntimeException("Payment not found"));
-            model.addAttribute("payment", payment);
-        }
+    @GetMapping("/booking/{bookingId}/payment/{paymentId}/edit")
+    public String edit(@PathVariable("bookingId") Long bookingId, @PathVariable("paymentId") Long paymentId, Model model) {
+        Payment payment = paymentService.getPaymentById(paymentId)
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
+        List<Payment> payments = paymentService.getPaymentsByBookingId(bookingId);
+        model.addAttribute("payment", payment);
+        model.addAttribute("payments", payments);
         return "booking/payment";
     }
 
@@ -95,9 +95,11 @@ public class PaymentController {
             return "redirect:/payments/" + id + "/edit";
         }
         paymentService.updatePayment(id, payment);
+        Long bookingId = payment.getBooking().getBookingId();
         attributes.addFlashAttribute("message", "Berhasil mengubah data pembayaran");
-        return "redirect:/payments";
+        return "redirect:/payments/booking/" + bookingId + "/payment";
     }
+
 
     @DeleteMapping("/{id}")
     public String deletePayment(@PathVariable Long id, RedirectAttributes attributes) {
