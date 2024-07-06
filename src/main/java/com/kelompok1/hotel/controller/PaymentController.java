@@ -50,20 +50,23 @@ public class PaymentController {
         Booking booking = bookingService.getBookingById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
         payment.setBooking(booking);
+        List<Payment> payments = paymentService.getPaymentsByBookingId(bookingId);
         model.addAttribute("payment", payment);
+        model.addAttribute("payments", payments);
         return "booking/payment";
     }
 
     @PostMapping
     public String store(@Valid Payment payment, BindingResult result, RedirectAttributes attributes) {
+        Long bookingId = payment.getBooking().getBookingId();
         if (result.hasErrors()) {
             attributes.addFlashAttribute("org.springframework.validation.BindingResult.payment", result);
             attributes.addFlashAttribute("payment", payment);
-            return "redirect:/payments/create?bookingId=" + payment.getBooking().getBookingId();
+            return "redirect:/payments/booking/" + bookingId + "/payment";
         }
         paymentService.savePayment(payment);
         attributes.addFlashAttribute("message", "Berhasil menambah data pembayaran");
-        return "redirect:/payments";
+        return "redirect:/payments/booking/" + bookingId + "/payment";
     }
 
     @GetMapping("/{id}")
