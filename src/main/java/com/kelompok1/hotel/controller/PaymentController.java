@@ -1,5 +1,6 @@
 package com.kelompok1.hotel.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -50,8 +51,17 @@ public class PaymentController {
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
         payment.setBooking(booking);
         List<Payment> payments = paymentService.getPaymentsByBookingId(bookingId);
+        
+        double totalPayments = payments.stream()
+                                    .map(Payment::getAmount)
+                                    .mapToDouble(BigDecimal::doubleValue)
+                                    .sum();
+        boolean isPaidOff = totalPayments >= booking.getTotalAmount().doubleValue();
+
         model.addAttribute("payment", payment);
         model.addAttribute("payments", payments);
+        model.addAttribute("totalAmount", booking.getTotalAmount());
+        model.addAttribute("isPaidOff", isPaidOff);
         return "booking/payment";
     }
 
@@ -80,8 +90,18 @@ public class PaymentController {
         Payment payment = paymentService.getPaymentById(paymentId)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
         List<Payment> payments = paymentService.getPaymentsByBookingId(bookingId);
+    
+        // Hitung total pembayaran
+        double totalPayments = payments.stream()
+                                       .map(Payment::getAmount)
+                                       .mapToDouble(BigDecimal::doubleValue)
+                                       .sum();
+        boolean isPaidOff = totalPayments >= payment.getBooking().getTotalAmount().doubleValue();
+    
         model.addAttribute("payment", payment);
         model.addAttribute("payments", payments);
+        model.addAttribute("totalAmount", payment.getBooking().getTotalAmount());
+        model.addAttribute("isPaidOff", isPaidOff);
         return "booking/payment";
     }
 
