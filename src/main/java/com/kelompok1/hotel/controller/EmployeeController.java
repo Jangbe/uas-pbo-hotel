@@ -95,4 +95,25 @@ public class EmployeeController {
         attributes.addFlashAttribute("message", "Berhasil menghapus data pegawai");
         return "redirect:/employees";
     }
+
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("employee", new Employee());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String registerEmployee(@Valid @ModelAttribute("employee") Employee employee, BindingResult result, RedirectAttributes attributes) {
+        if (serviceEmployee.existsByEmail(employee.getEmail())) {
+            result.addError(new FieldError("employee", "email", "Email sudah ada, gunakan email yang lain!"));
+        }
+        if (result.hasErrors()) {
+            attributes.addFlashAttribute("org.springframework.validation.BindingResult.employee", result);
+            attributes.addFlashAttribute("employee", employee);
+            return "redirect:/employees/register";
+        }
+        serviceEmployee.saveEmployee(employee);
+        attributes.addFlashAttribute("message", "Registrasi berhasil. Silakan login.");
+        return "redirect:/login";
+    }
 }

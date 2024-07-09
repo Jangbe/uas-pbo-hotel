@@ -28,7 +28,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/public/**", "/src/**").permitAll()
+                        .requestMatchers("/", "/public/**", "/src/**", "/employees/register").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(
                         form -> form
