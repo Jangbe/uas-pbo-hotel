@@ -28,7 +28,7 @@ public class Room {
     @Column()
     private String roomNumber;
 
-    @NotNull(message = "Tipe ruangang tidak boleh kosong")
+    @NotNull(message = "Tipe ruangan tidak boleh kosong")
     @Column()
     private String roomType;
 
