@@ -32,11 +32,11 @@
                     <tr th:each="row : ${bookings}">
                         <td class="table-plus" th:text="|${row.guest.firstName} ${row.guest.lastName}|"></td>
                         <td th:text="${row.room.roomNumber}"></td>
-                        <td th:text="${#dates.format(row.checkInDate, 'Y-M-d hh:mm:ss')}"></td>
-                        <td th:text="${#dates.format(row.checkOutDate, 'Y-M-d hh:mm:ss')}"></td>
+                        <td th:text="${#dates.format(row.checkInDate, 'Y-MM-dd hh:mm')}"></td>
+                        <td th:text="${#dates.format(row.checkOutDate, 'Y-MM-dd hh:mm')}"></td>
                         <td th:text="${'Rp. ' + #numbers.formatDecimal(row.totalAmount, 0, 'POINT', 0, 'COMMA')}"></td>
                         <td th:text="${row.status}"></td>
-                        <td th:text="${row.createdAt}"></td>
+                        <td th:text="${#dates.format(row.createdAt, 'Y-MM-dd hh:mm')}"></td>
                         <td>
                             <div class="dropdown">
                                 <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#"
